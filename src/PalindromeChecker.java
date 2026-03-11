@@ -1,4 +1,6 @@
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class PalindromeChecker {
     public static void main(String[] args) {
@@ -19,6 +21,9 @@ public class PalindromeChecker {
         
         // UC5: Stack-Based Palindrome Checker
         checkUC5Stack("radar");
+        
+        // UC6: Queue + Stack Based Palindrome Check
+        checkUC6QueueAndStack("level");
     }
     
     // UC2 Logic
@@ -96,6 +101,34 @@ public class PalindromeChecker {
             System.out.println("[UC5] The word '" + word + "' is a palindrome.");
         } else {
             System.out.println("[UC5] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC6 Logic
+    private static void checkUC6QueueAndStack(String word) {
+        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+        
+        // Push and Enqueue all characters
+        for (int i = 0; i < word.length(); i++) {
+            char c = word.charAt(i);
+            stack.push(c);
+            queue.offer(c); // offer or add
+        }
+        
+        boolean isPalindrome = true;
+        // Compare dequeue vs pop
+        while (!stack.isEmpty() && !queue.isEmpty()) {
+            if (stack.pop() != queue.poll()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC6] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC6] The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
