@@ -32,6 +32,9 @@ public class PalindromeChecker {
         
         // UC8: Linked List Based Palindrome Checker
         checkUC8LinkedList("kayak");
+        
+        // UC9: Recursive Palindrome Checker
+        checkUC9Recursive("rotator");
     }
     
     // UC2 Logic
@@ -226,5 +229,30 @@ public class PalindromeChecker {
         } else {
             System.out.println("[UC8] The word '" + word + "' is NOT a palindrome.");
         }
+    }
+    
+    // UC9 Logic
+    private static void checkUC9Recursive(String word) {
+        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
+        
+        if (isPalindrome) {
+            System.out.println("[UC9] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC9] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    private static boolean isPalindromeRecursive(String word, int start, int end) {
+        // Base condition
+        if (start >= end) {
+            return true;
+        }
+        
+        if (word.charAt(start) != word.charAt(end)) {
+            return false;
+        }
+        
+        // Recursive call
+        return isPalindromeRecursive(word, start + 1, end - 1);
     }
 }
