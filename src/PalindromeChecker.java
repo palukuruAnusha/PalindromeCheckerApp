@@ -1,6 +1,8 @@
 import java.util.Stack;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class PalindromeChecker {
     public static void main(String[] args) {
@@ -24,6 +26,9 @@ public class PalindromeChecker {
         
         // UC6: Queue + Stack Based Palindrome Check
         checkUC6QueueAndStack("level");
+        
+        // UC7: Deque-Based Optimized Palindrome Checker
+        checkUC7Deque("racecar");
     }
     
     // UC2 Logic
@@ -129,6 +134,34 @@ public class PalindromeChecker {
             System.out.println("[UC6] The word '" + word + "' is a palindrome.");
         } else {
             System.out.println("[UC6] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC7 Logic
+    private static void checkUC7Deque(String word) {
+        Deque<Character> deque = new ArrayDeque<>();
+        
+        // Insert characters into deque
+        for (int i = 0; i < word.length(); i++) {
+            deque.addLast(word.charAt(i));
+        }
+        
+        boolean isPalindrome = true;
+        
+        // Remove first & last and Compare until empty or size 1
+        while (deque.size() > 1) {
+            char first = deque.removeFirst();
+            char last = deque.removeLast();
+            if (first != last) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC7] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC7] The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
