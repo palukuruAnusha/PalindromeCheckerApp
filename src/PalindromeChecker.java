@@ -38,6 +38,9 @@ public class PalindromeChecker {
         
         // UC10: Case-Insensitive & Space-Ignored Palindrome
         checkUC10Normalized("A man, a plan, a canal: Panama");
+        
+        // UC11: Object-Oriented Palindrome Service
+        checkUC11Oops("racecar");
     }
     
     // UC2 Logic
@@ -282,6 +285,34 @@ public class PalindromeChecker {
             System.out.println("[UC10] The phrase '" + word + "' is a palindrome.");
         } else {
             System.out.println("[UC10] The phrase '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC11 Logic
+    private static class PalindromeService {
+        // Encapsulated logic, single responsibility principle
+        public boolean checkPalindrome(String text) {
+            if (text == null) return false;
+            String normalized = text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+            int i = 0, j = normalized.length() - 1;
+            while (i < j) {
+                if (normalized.charAt(i) != normalized.charAt(j)) {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+            return true;
+        }
+    }
+    
+    private static void checkUC11Oops(String word) {
+        PalindromeService service = new PalindromeService();
+        boolean isPalindrome = service.checkPalindrome(word);
+        if (isPalindrome) {
+            System.out.println("[UC11] OOP Service: The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC11] OOP Service: The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
