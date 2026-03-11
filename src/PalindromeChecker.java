@@ -29,6 +29,24 @@ public class PalindromeChecker {
         
         // UC7: Deque-Based Optimized Palindrome Checker
         checkUC7Deque("racecar");
+        
+        // UC8: Linked List Based Palindrome Checker
+        checkUC8LinkedList("kayak");
+        
+        // UC9: Recursive Palindrome Checker
+        checkUC9Recursive("rotator");
+        
+        // UC10: Case-Insensitive & Space-Ignored Palindrome
+        checkUC10Normalized("A man, a plan, a canal: Panama");
+        
+        // UC11: Object-Oriented Palindrome Service
+        checkUC11Oops("racecar");
+        
+        // UC12: Strategy Pattern for Palindrome Algorithms
+        checkUC12Strategy("kayak");
+        
+        // UC13: Performance Comparison
+        checkUC13Performance("a".repeat(10000) + "b" + "a".repeat(10000));
     }
     
     // UC2 Logic
@@ -163,5 +181,228 @@ public class PalindromeChecker {
         } else {
             System.out.println("[UC7] The word '" + word + "' is NOT a palindrome.");
         }
+    }
+    
+    // UC8 Logic
+    private static class Node {
+        char data;
+        Node next;
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+    
+    private static void checkUC8LinkedList(String word) {
+        if (word == null || word.length() == 0) return;
+        
+        // Convert string to linked list
+        Node head = new Node(word.charAt(0));
+        Node current = head;
+        for (int i = 1; i < word.length(); i++) {
+            current.next = new Node(word.charAt(i));
+            current = current.next;
+        }
+        
+        // Find middle using Fast and Slow Pointer Technique
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        // Reverse second half
+        Node prev = null;
+        Node curr = slow;
+        while (curr != null) {
+            Node nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        
+        // Compare halves
+        Node firstHalf = head;
+        Node secondHalf = prev;
+        boolean isPalindrome = true;
+        
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                isPalindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC8] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC8] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC9 Logic
+    private static void checkUC9Recursive(String word) {
+        boolean isPalindrome = isPalindromeRecursive(word, 0, word.length() - 1);
+        
+        if (isPalindrome) {
+            System.out.println("[UC9] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC9] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    private static boolean isPalindromeRecursive(String word, int start, int end) {
+        // Base condition
+        if (start >= end) {
+            return true;
+        }
+        
+        if (word.charAt(start) != word.charAt(end)) {
+            return false;
+        }
+        
+        // Recursive call
+        return isPalindromeRecursive(word, start + 1, end - 1);
+    }
+    
+    // UC10 Logic
+    private static void checkUC10Normalized(String word) {
+        // Normalize string: Remove all non-alphanumeric characters and convert to lower case
+        String normalized = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        
+        // Apply typical two-pointer logic
+        int start = 0;
+        int end = normalized.length() - 1;
+        boolean isPalindrome = true;
+        
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC10] The phrase '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC10] The phrase '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC11 Logic
+    private static class PalindromeService {
+        // Encapsulated logic, single responsibility principle
+        public boolean checkPalindrome(String text) {
+            if (text == null) return false;
+            String normalized = text.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+            int i = 0, j = normalized.length() - 1;
+            while (i < j) {
+                if (normalized.charAt(i) != normalized.charAt(j)) {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+            return true;
+        }
+    }
+    
+    private static void checkUC11Oops(String word) {
+        PalindromeService service = new PalindromeService();
+        boolean isPalindrome = service.checkPalindrome(word);
+        if (isPalindrome) {
+            System.out.println("[UC11] OOP Service: The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC11] OOP Service: The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC12 Logic
+    public interface PalindromeStrategy {
+        boolean isPalindrome(String text);
+    }
+    
+    public static class StackStrategy implements PalindromeStrategy {
+        @Override
+        public boolean isPalindrome(String text) {
+            Stack<Character> stack = new Stack<>();
+            for (char c : text.toCharArray()) {
+                stack.push(c);
+            }
+            for (char c : text.toCharArray()) {
+                if (c != stack.pop()) return false;
+            }
+            return true;
+        }
+    }
+    
+    public static class DequeStrategy implements PalindromeStrategy {
+        @Override
+        public boolean isPalindrome(String text) {
+           Deque<Character> deque = new ArrayDeque<>();
+           for (char c : text.toCharArray()) {
+               deque.addLast(c);
+           }
+           while (deque.size() > 1) {
+               if (deque.removeFirst() != deque.removeLast()) return false;
+           }
+           return true;
+        }
+    }
+    
+    private static void checkUC12Strategy(String word) {
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+        
+        System.out.println("[UC12] Using StackStrategy - '" + word + "' is palindrome: " + stackStrategy.isPalindrome(word));
+        System.out.println("[UC12] Using DequeStrategy - '" + word + "' is palindrome: " + dequeStrategy.isPalindrome(word));
+    }
+    
+    // UC13 Logic
+    private static void checkUC13Performance(String largeWord) {
+        System.out.println("\n[UC13] Performance Comparison for string of length: " + largeWord.length());
+        
+        long startTime = System.nanoTime();
+        // 1. String Reverse Logic
+        String reversed = "";
+        for (int i = largeWord.length() - 1; i >= 0; i--) {
+            reversed += largeWord.charAt(i);
+        }
+        boolean isPal1 = largeWord.equals(reversed);
+        long endTime = System.nanoTime();
+        System.out.println("String Reverse Logic Time: " + (endTime - startTime) + " ns");
+        
+        // 2. Two-Pointer Logic
+        startTime = System.nanoTime();
+        boolean isPal2 = true;
+        int i = 0, j = largeWord.length() - 1;
+        while (i < j) {
+            if (largeWord.charAt(i) != largeWord.charAt(j)) {
+                isPal2 = false;
+                break;
+            }
+            i++; j--;
+        }
+        endTime = System.nanoTime();
+        System.out.println("Two-Pointer Logic Time: " + (endTime - startTime) + " ns");
+        
+        // 3. Stack Logic
+        startTime = System.nanoTime();
+        Stack<Character> stack = new Stack<>();
+        for (char c : largeWord.toCharArray()) stack.push(c);
+        boolean isPal3 = true;
+        for (char c : largeWord.toCharArray()) {
+            if (c != stack.pop()) {
+                isPal3 = false;
+                break;
+            }
+        }
+        endTime = System.nanoTime();
+        System.out.println("Stack Logic Time:        " + (endTime - startTime) + " ns");
     }
 }
