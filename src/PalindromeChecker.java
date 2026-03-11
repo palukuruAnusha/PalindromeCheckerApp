@@ -12,6 +12,8 @@ public class PalindromeChecker {
         
         // UC3: Palindrome Check Using String Reverse
         checkUC3StringReverse("racecar");
+        // UC4: Character Array Based Palindrome Check
+        checkUC4CharArray("deified");
     }
     
     // UC2 Logic
@@ -41,6 +43,29 @@ public class PalindromeChecker {
             System.out.println("[UC3] The word '" + word + "' is a palindrome (reversed: " + reversed + ").");
         } else {
             System.out.println("[UC3] The word '" + word + "' is NOT a palindrome (reversed: " + reversed + ").");
+        }
+    }
+    
+    // UC4 Logic
+    private static void checkUC4CharArray(String word) {
+        char[] chars = word.toCharArray();
+        int start = 0;
+        int end = chars.length - 1;
+        boolean isPalindrome = true;
+        
+        while (start < end) {
+            if (chars[start] != chars[end]) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC4] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC4] The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
