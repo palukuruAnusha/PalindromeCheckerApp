@@ -41,6 +41,9 @@ public class PalindromeChecker {
         
         // UC11: Object-Oriented Palindrome Service
         checkUC11Oops("racecar");
+        
+        // UC12: Strategy Pattern for Palindrome Algorithms
+        checkUC12Strategy("kayak");
     }
     
     // UC2 Logic
@@ -314,5 +317,46 @@ public class PalindromeChecker {
         } else {
             System.out.println("[UC11] OOP Service: The word '" + word + "' is NOT a palindrome.");
         }
+    }
+    
+    // UC12 Logic
+    public interface PalindromeStrategy {
+        boolean isPalindrome(String text);
+    }
+    
+    public static class StackStrategy implements PalindromeStrategy {
+        @Override
+        public boolean isPalindrome(String text) {
+            Stack<Character> stack = new Stack<>();
+            for (char c : text.toCharArray()) {
+                stack.push(c);
+            }
+            for (char c : text.toCharArray()) {
+                if (c != stack.pop()) return false;
+            }
+            return true;
+        }
+    }
+    
+    public static class DequeStrategy implements PalindromeStrategy {
+        @Override
+        public boolean isPalindrome(String text) {
+           Deque<Character> deque = new ArrayDeque<>();
+           for (char c : text.toCharArray()) {
+               deque.addLast(c);
+           }
+           while (deque.size() > 1) {
+               if (deque.removeFirst() != deque.removeLast()) return false;
+           }
+           return true;
+        }
+    }
+    
+    private static void checkUC12Strategy(String word) {
+        PalindromeStrategy stackStrategy = new StackStrategy();
+        PalindromeStrategy dequeStrategy = new DequeStrategy();
+        
+        System.out.println("[UC12] Using StackStrategy - '" + word + "' is palindrome: " + stackStrategy.isPalindrome(word));
+        System.out.println("[UC12] Using DequeStrategy - '" + word + "' is palindrome: " + dequeStrategy.isPalindrome(word));
     }
 }
