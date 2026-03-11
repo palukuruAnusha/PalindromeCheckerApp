@@ -44,6 +44,9 @@ public class PalindromeChecker {
         
         // UC12: Strategy Pattern for Palindrome Algorithms
         checkUC12Strategy("kayak");
+        
+        // UC13: Performance Comparison
+        checkUC13Performance("a".repeat(10000) + "b" + "a".repeat(10000));
     }
     
     // UC2 Logic
@@ -358,5 +361,48 @@ public class PalindromeChecker {
         
         System.out.println("[UC12] Using StackStrategy - '" + word + "' is palindrome: " + stackStrategy.isPalindrome(word));
         System.out.println("[UC12] Using DequeStrategy - '" + word + "' is palindrome: " + dequeStrategy.isPalindrome(word));
+    }
+    
+    // UC13 Logic
+    private static void checkUC13Performance(String largeWord) {
+        System.out.println("\n[UC13] Performance Comparison for string of length: " + largeWord.length());
+        
+        long startTime = System.nanoTime();
+        // 1. String Reverse Logic
+        String reversed = "";
+        for (int i = largeWord.length() - 1; i >= 0; i--) {
+            reversed += largeWord.charAt(i);
+        }
+        boolean isPal1 = largeWord.equals(reversed);
+        long endTime = System.nanoTime();
+        System.out.println("String Reverse Logic Time: " + (endTime - startTime) + " ns");
+        
+        // 2. Two-Pointer Logic
+        startTime = System.nanoTime();
+        boolean isPal2 = true;
+        int i = 0, j = largeWord.length() - 1;
+        while (i < j) {
+            if (largeWord.charAt(i) != largeWord.charAt(j)) {
+                isPal2 = false;
+                break;
+            }
+            i++; j--;
+        }
+        endTime = System.nanoTime();
+        System.out.println("Two-Pointer Logic Time: " + (endTime - startTime) + " ns");
+        
+        // 3. Stack Logic
+        startTime = System.nanoTime();
+        Stack<Character> stack = new Stack<>();
+        for (char c : largeWord.toCharArray()) stack.push(c);
+        boolean isPal3 = true;
+        for (char c : largeWord.toCharArray()) {
+            if (c != stack.pop()) {
+                isPal3 = false;
+                break;
+            }
+        }
+        endTime = System.nanoTime();
+        System.out.println("Stack Logic Time:        " + (endTime - startTime) + " ns");
     }
 }
