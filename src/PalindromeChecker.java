@@ -29,6 +29,9 @@ public class PalindromeChecker {
         
         // UC7: Deque-Based Optimized Palindrome Checker
         checkUC7Deque("racecar");
+        
+        // UC8: Linked List Based Palindrome Checker
+        checkUC8LinkedList("kayak");
     }
     
     // UC2 Logic
@@ -162,6 +165,66 @@ public class PalindromeChecker {
             System.out.println("[UC7] The word '" + word + "' is a palindrome.");
         } else {
             System.out.println("[UC7] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC8 Logic
+    private static class Node {
+        char data;
+        Node next;
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+    
+    private static void checkUC8LinkedList(String word) {
+        if (word == null || word.length() == 0) return;
+        
+        // Convert string to linked list
+        Node head = new Node(word.charAt(0));
+        Node current = head;
+        for (int i = 1; i < word.length(); i++) {
+            current.next = new Node(word.charAt(i));
+            current = current.next;
+        }
+        
+        // Find middle using Fast and Slow Pointer Technique
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        // Reverse second half
+        Node prev = null;
+        Node curr = slow;
+        while (curr != null) {
+            Node nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        
+        // Compare halves
+        Node firstHalf = head;
+        Node secondHalf = prev;
+        boolean isPalindrome = true;
+        
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                isPalindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC8] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC8] The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
