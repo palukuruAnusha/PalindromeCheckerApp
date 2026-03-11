@@ -35,6 +35,9 @@ public class PalindromeChecker {
         
         // UC9: Recursive Palindrome Checker
         checkUC9Recursive("rotator");
+        
+        // UC10: Case-Insensitive & Space-Ignored Palindrome
+        checkUC10Normalized("A man, a plan, a canal: Panama");
     }
     
     // UC2 Logic
@@ -254,5 +257,31 @@ public class PalindromeChecker {
         
         // Recursive call
         return isPalindromeRecursive(word, start + 1, end - 1);
+    }
+    
+    // UC10 Logic
+    private static void checkUC10Normalized(String word) {
+        // Normalize string: Remove all non-alphanumeric characters and convert to lower case
+        String normalized = word.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        
+        // Apply typical two-pointer logic
+        int start = 0;
+        int end = normalized.length() - 1;
+        boolean isPalindrome = true;
+        
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC10] The phrase '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC10] The phrase '" + word + "' is NOT a palindrome.");
+        }
     }
 }
