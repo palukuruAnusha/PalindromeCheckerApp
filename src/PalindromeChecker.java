@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class PalindromeChecker {
     public static void main(String[] args) {
         System.out.println("=========================================");
@@ -14,6 +16,9 @@ public class PalindromeChecker {
         checkUC3StringReverse("racecar");
         // UC4: Character Array Based Palindrome Check
         checkUC4CharArray("deified");
+        
+        // UC5: Stack-Based Palindrome Checker
+        checkUC5Stack("radar");
     }
     
     // UC2 Logic
@@ -66,6 +71,31 @@ public class PalindromeChecker {
             System.out.println("[UC4] The word '" + word + "' is a palindrome.");
         } else {
             System.out.println("[UC4] The word '" + word + "' is NOT a palindrome.");
+        }
+    }
+    
+    // UC5 Logic
+    private static void checkUC5Stack(String word) {
+        Stack<Character> stack = new Stack<>();
+        
+        // Push all characters to the stack
+        for (int i = 0; i < word.length(); i++) {
+            stack.push(word.charAt(i));
+        }
+        
+        boolean isPalindrome = true;
+        // Pop and compare with original string
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) != stack.pop()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        
+        if (isPalindrome) {
+            System.out.println("[UC5] The word '" + word + "' is a palindrome.");
+        } else {
+            System.out.println("[UC5] The word '" + word + "' is NOT a palindrome.");
         }
     }
 }
